@@ -1,0 +1,5 @@
+<%= form_tag(:action => "create") do %>
+  <%= label_tag :partner_email, "Type your partner's email" %>
+  <%= text_field_tag :partner_email %>
+  <%= submit_tag "make a deal", class: "submit" %>
+<% end %>
