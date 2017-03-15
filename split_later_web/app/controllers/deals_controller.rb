@@ -1,5 +1,6 @@
-class HomeController < ApplicationController
-  class HomeControllerError < StandardError; end
+class DealsController < ApplicationController
+  include Concerns::DealsControllerModule
+
   before_action :authenticate_user!
   def index
     @deals = current_user.deals
@@ -26,17 +27,12 @@ class HomeController < ApplicationController
   end
 
   def create
-    Deal.transaction do
-      @deal = Deal.new
-      @deal.save!
-      @deal.users << current_user
-      @deal.users << find_partner(params[:partner_email])
-    end
-    flash[:notice] = "succeed save deal"
-    redirect_to home_path(@deal)
+    create_deal!
+    flash[:notice] = "succeed saving deal"
+    redirect_to deal_path(@deal)
     rescue => e
       flash[:error] = e.message
-      render action: :new 
+      render action: :new
 
   end
 
@@ -55,15 +51,6 @@ class HomeController < ApplicationController
   def set_message_params(message)
     message.deal_id = params[:id]
     message.actor_id = current_user.id
-  end
-
-  def find_partner(email)
-    partner = User.find_by(email: email)
-    raise HomeControllerError.new("can't find the email") if !partner
-    raise HomeControllerError.new("can't be partner with your self") if partner == current_user
-    raise HomeControllerError.new("partner already exist") if current_user.partners.include?(partner)
-    partner
-
   end
 
 end
