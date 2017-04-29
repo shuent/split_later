@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <%= current_user.email if current_user %>
   <% flash.each do |key, value| %>
     <%= content_tag(:div, value, class: "#{key}") %>
   <% end %>

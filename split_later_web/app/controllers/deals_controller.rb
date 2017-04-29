@@ -6,9 +6,12 @@ class DealsController < ApplicationController
     @deals = current_user.deals
   end
 
+
   def show
-    @deal = current_user.deals.find(params[:id])
+    @deal = Deal.find(params[:id])
     @message = Message.new
+  rescue => e
+    error_message(e)
   end
 
   def update
@@ -27,13 +30,13 @@ class DealsController < ApplicationController
   end
 
   def create
-    create_deal!
+    @deal = Deal.new
+    create_deal!(@deal)
     flash[:notice] = "succeed saving deal"
     redirect_to deal_path(@deal)
-    rescue => e
-      flash[:error] = e.message
-      render action: :new
-
+  rescue => e
+    flash[:error] = e.message
+    render action: :new
   end
 
   def destroy
@@ -54,3 +57,5 @@ class DealsController < ApplicationController
   end
 
 end
+
+

@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   authenticate :user do
     root to: 'deals#index'
-    resources :deals
+    resources :deals do
+      resources :messages, only: [:create, :destroy]
+    end
   end
 
   namespace :api, { format: :json } do

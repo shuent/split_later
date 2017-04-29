@@ -8,14 +8,14 @@
 sum => <%= @deal.sum(current_user) %>
 <br>
 <br>
-<%= form_for(@message, url: home_path(params[:id]), method: :patch) do |f| %>
+<%= form_for [@deal, @message] do |f| %>
   <%= f.label :price, "Price" %>
   <%= f.text_field :price %>
 
   <%= f.label :entry, "Entry" %>
   <%= f.text_field :entry %>
 
-  <%= f.label :borrow_lend, "Borrow 0 or Lend 1" %>
+  <%= f.label :borrow_lend, "borrow or lend" %>
   <%= f.text_field :borrow_lend %>
 
   <%= f.submit "Submit", :disable_with => 'Submiting...' %>
